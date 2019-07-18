@@ -3,10 +3,6 @@ import * as mongoose from 'mongoose';
 export const UserSchema = new mongoose.Schema({
     name: String,
     email: String,
-    orders: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Order'
-    }],
     password: { type: String, required: true, minlength: 8 },
     phone: String,
     gender: Boolean,

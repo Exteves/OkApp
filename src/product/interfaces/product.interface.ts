@@ -4,5 +4,6 @@ export interface Product extends Document {
     readonly price: number;
     readonly size: string;
     readonly enabled: boolean;
+    readonly spotlight: boolean;
     readonly created_at: Date;
 }

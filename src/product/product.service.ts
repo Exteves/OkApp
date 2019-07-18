@@ -24,12 +24,12 @@ export class ProductService {
     }
 
     async update(productId, createProductDTO: CreateProductDTO): Promise<Product> {
-        const updatedProduct = await this.productModel.findByIdAndUpdate(productId, createProductDTO, { new: true });
+        const updatedProduct = await this.productModel.updateOne(productId, createProductDTO, { new: true });
         return updatedProduct;
     }
 
     async delete(productId): Promise<Product> {
-        const deletedProduct = await this.productModel.findByIdAndRemove(productId);
+        const deletedProduct = await this.productModel.deleteOne(productId);
         return deletedProduct;
     }
 }

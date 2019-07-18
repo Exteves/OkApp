@@ -9,11 +9,11 @@ export class OrderService {
     constructor(@InjectModel('Order') private readonly orderModel: Model<Order>) {}
 
     async getAll(): Promise<Order[]> {
-        const orders = await this.orderModel.find.exec();
+        const orders = await this.orderModel.find().exec();
         return orders;
     }
 
-    async get(orderId: number): Promise<Order> {
+    async get(orderId): Promise<Order> {
         const order = await this.orderModel.findById(orderId).exec();
         return order;
     }
@@ -23,13 +23,13 @@ export class OrderService {
         return newOrder.save();
     }
 
-    async update(orderId: number, orderDTO: CreateOrderDTO): Promise<Order> {
-        const updatedOrder = await this.orderModel.findByIdAndUpdate(orderId, orderDTO, { new: true });
+    async update(orderId, orderDTO: CreateOrderDTO): Promise<Order> {
+        const updatedOrder = await this.orderModel.updateOne(orderId, orderDTO, { new: true });
         return updatedOrder;
     }
 
-    async delete(orderId: number): Promise<Order> {
-        const deletedOrder = await this.orderModel.findByIdAndRemove(orderId);
+    async delete(orderId): Promise<Order> {
+        const deletedOrder = await this.orderModel.deleteOne(orderId);
         return deletedOrder;
     }
 }
