@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './interfaces/user.interface';
-import { CreateUserDTO } from './dto/user.dto';
+import { CreateUserDTO, UserOrderDTO } from './dto/user.dto';
 
 @Injectable()
 export class UserService {
@@ -23,13 +23,20 @@ export class UserService {
         return newUser.save();
     }
 
-    async update(userId, userDTO: CreateUserDTO): Promise<User> {
+    async update(userId: string, userDTO: CreateUserDTO): Promise<User> {
         const updatedUser = await this.userModel.updateOne(userId, userDTO, { new: true });
         return updatedUser;
     }
 
-    async delete(userId): Promise<User> {
+    async delete(userId: string): Promise<User> {
         const deletedUser = await this.userModel.deleteOne(userId);
         return deletedUser;
+    }
+
+    async addOrderToUser(userId: string, orderId: string): Promise<User> {
+        const user = await this.userModel.findById(userId);
+        user.orders.push(orderId);
+        await user.save();
+        return user;
     }
 }

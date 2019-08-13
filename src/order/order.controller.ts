@@ -1,15 +1,21 @@
-import { Controller, Post, Get, Put, Delete, Res, Body, Query, NotFoundException, HttpStatus, Param } from '@nestjs/common';
+import { Controller, Post, Get, Put, Delete, Res, Body, Headers, Query, NotFoundException, HttpStatus, Param, HttpException, ForbiddenException } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDTO } from './dto/order.dto';
+import { throwError } from 'rxjs';
 
 @Controller('order')
 export class OrderController {
     constructor(private orderService: OrderService) { }
     
-    
     @Post('/')
-    async addOrder(@Res() res, @Body() createOrderDTO: CreateOrderDTO) {
-        await this.orderService.add(createOrderDTO);
+    async addOrder(@Res() res, @Headers('token') token, @Body() createOrderDTO: CreateOrderDTO) {
+        if (!token) {
+            throw new ForbiddenException();
+        }
+        const order = await this.orderService.add(token, createOrderDTO);
+        if (order === null) {
+            throw new NotFoundException('Produtos não existentes para efetuar um pedido.');
+        }
         return res.status(HttpStatus.CREATED).json();
     }
 

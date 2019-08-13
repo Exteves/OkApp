@@ -6,13 +6,13 @@ import { StockController } from './stock.controller';
 
 @Module({
     imports: [
-        MongooseModule.forFeature([{ name: 'Stock', schema: StockSchema}])
-      ],
-      providers: [
-        StockService
-      ],
-      controllers: [
-        StockController
-      ]
+      MongooseModule.forFeature([{ name: 'Stock', schema: StockSchema}])
+    ],
+    providers: [
+      StockService
+    ],
+    controllers: [
+      StockController
+    ]
 })
 export class StockModule {}

@@ -1,4 +1,4 @@
-import { Controller, Post, Res, Body, HttpStatus, Get, NotFoundException, Param, Put, Query, Delete } from '@nestjs/common';
+import { Controller, Post, Res, Body, HttpStatus, Get, NotFoundException, Param, Put, Query, Delete, HttpException } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDTO } from './dto/user.dto';
 
@@ -8,8 +8,12 @@ export class UserController {
 
     @Post('/')
     async addUser(@Res() res, @Body() createUserDTO: CreateUserDTO) {
-        await this.userService.add(createUserDTO);
-        return res.status(HttpStatus.CREATED).json();
+        try {
+            await this.userService.add(createUserDTO);
+            return res.status(HttpStatus.CREATED).json();            
+        } catch (error) {
+            throw new HttpException(`${error.message}`, HttpStatus.BAD_REQUEST);            
+        }
     }
 
     @Get('/')

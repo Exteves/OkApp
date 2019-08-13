@@ -9,7 +9,7 @@ import { StockModule } from './stock/stock.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/okdb', { urlNewParser: true, useCreateIndex: true }),
+    MongooseModule.forRoot('mongodb+srv://omnistack:omnistack@cluster0-zcjna.mongodb.net/omnistack8?retryWrites=true&w=majority', { urlNewParser: true, useCreateIndex: true }),
     ProductModule,
     OrderModule,
     UserModule,

@@ -1,4 +1,4 @@
-import { Controller, Post, Res, Body, HttpStatus, Get, Param, NotFoundException, Delete, Query, Put } from '@nestjs/common';
+import { Controller, Post, Res, Body, HttpStatus, Get, Param, NotFoundException, Delete, Query, Put, HttpException } from '@nestjs/common';
 import { CreateProductDTO } from './dto/product.dto';
 import { ProductService } from './product.service';
 
@@ -8,8 +8,12 @@ export class ProductController {
 
     @Post('/')
     async addProduct(@Res() res, @Body() createProductDTO: CreateProductDTO) {
-        await this.productService.add(createProductDTO);
-        return res.status(HttpStatus.CREATED).json();
+        try {
+            await this.productService.add(createProductDTO);
+            return res.status(HttpStatus.CREATED).json();            
+        } catch (error) {
+            throw new HttpException(`${error.message}`, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Get('/')

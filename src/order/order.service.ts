@@ -3,10 +3,16 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Order } from './interfaces/order.interface';
 import { CreateOrderDTO } from './dto/order.dto';
+import { ProductService } from 'src/product/product.service';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class OrderService {
-    constructor(@InjectModel('Order') private readonly orderModel: Model<Order>) {}
+    constructor(
+        @InjectModel('Order') private readonly orderModel: Model<Order>,
+        private productService: ProductService,
+        private userService: UserService,
+    ) {}
 
     async getAll(): Promise<Order[]> {
         const orders = await this.orderModel.find().exec();
@@ -18,9 +24,13 @@ export class OrderService {
         return order;
     }
 
-    async add(orderDTO: CreateOrderDTO): Promise<Order> {
+    async add(userId: string, orderDTO: CreateOrderDTO): Promise<Order> {
         const newOrder = await this.orderModel(orderDTO);
-        return newOrder.save();
+        if (newOrder && newOrder.products.length > 0) {
+            const orderUser = await this.userService.addOrderToUser(userId, newOrder._id);           
+            return newOrder.save();            
+        }
+        return null;
     }
 
     async update(orderId, orderDTO: CreateOrderDTO): Promise<Order> {

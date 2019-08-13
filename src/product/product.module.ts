@@ -13,6 +13,9 @@ import { ProductSchema } from './schemas/product.schema';
   ],
   providers: [
     ProductService
+  ],
+  exports: [
+    ProductService
   ]
 })
 export class ProductModule {}
