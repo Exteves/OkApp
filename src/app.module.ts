@@ -6,6 +6,8 @@ import { ProductModule } from './product/product.module';
 import { OrderModule } from './order/order.module';
 import { UserModule } from './user/user.module';
 import { StockModule } from './stock/stock.module';
+import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from './config/config.module';
 
 @Module({
   imports: [
@@ -14,6 +16,8 @@ import { StockModule } from './stock/stock.module';
     OrderModule,
     UserModule,
     StockModule,
+    AuthModule,
+    ConfigModule,
   ],
   controllers: [
     AppController,

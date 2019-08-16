@@ -1,7 +1,6 @@
 import { Controller, Post, Get, Put, Delete, Res, Body, Headers, Query, NotFoundException, HttpStatus, Param, HttpException, ForbiddenException } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDTO } from './dto/order.dto';
-import { throwError } from 'rxjs';
 
 @Controller('order')
 export class OrderController {
