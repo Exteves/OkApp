@@ -1,8 +1,10 @@
-import { Controller, Get, Post, Request, UseGuards, Body } from '@nestjs/common';
+import { Controller, Get, Post, UseGuards, Body } from '@nestjs/common';
 import { AppService } from './app.service';
 import { AuthGuard } from '@nestjs/passport';
 import { UserLoginDTO } from './user/dto/user.dto';
 import { AuthService } from './auth/auth.service';
+import { LocalStrategy } from './auth/local.strategy';
+import { LocalAuthGuard } from './guards/local-auth.guard';
 
 @Controller()
 export class AppController {
@@ -13,11 +15,9 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @UseGuards(AuthGuard('local'))
   @Post('login')
+  @UseGuards(new LocalAuthGuard())
   async login(@Body() userLoginDTO: UserLoginDTO) {
-    const teste = await this.authService.validateUser(userLoginDTO);
-    console.log(teste);
     return this.authService.login(userLoginDTO);
   }
 }

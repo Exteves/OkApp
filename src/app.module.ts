@@ -8,6 +8,7 @@ import { UserModule } from './user/user.module';
 import { StockModule } from './stock/stock.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from './config/config.module';
+import { LocalAuthGuard } from './guards/local-auth.guard';
 
 @Module({
   imports: [
@@ -22,6 +23,9 @@ import { ConfigModule } from './config/config.module';
   controllers: [
     AppController,
   ],
-  providers: [AppService],
+  providers: [
+    AppService,
+    LocalAuthGuard
+  ],
 })
 export class AppModule {}
